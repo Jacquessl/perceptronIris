@@ -32,9 +32,11 @@ class MyFrame
     private int accurateTest;
     private int possibleTest;
     private boolean wypisywacDokladnosc = false;
-    public MyFrame(List<String[]> data)
+    private Perceptron pc;
+    public MyFrame()
     {
-        this.data = data;
+        ReadData rd = new ReadData("train-set.txt");
+        data = rd.readData();;
 
         NumberFormat floatFormat = DecimalFormat.getInstance();
         formatter = new NumberFormatter(floatFormat);
@@ -125,7 +127,7 @@ class MyFrame
         name.setLocation(20, 300);
         c.add(name);
 
-        stalaUczenia = new JFormattedTextField(intFormatter);
+        stalaUczenia = new JFormattedTextField(formatter);
         stalaUczenia.setFont(new Font("Arial", Font.PLAIN, 15));
         stalaUczenia.setSize(190, 30);
         stalaUczenia.setLocation(220, 300);
@@ -177,7 +179,11 @@ class MyFrame
                     + stalaUczenia.getText() +"<br>";
             String[] dataToAnalyze = {dlugoscListka.getText(), szerokoscListka.getText(),
                     dlugoscPlatka.getText(), szerokoscPlatka.getText()};
-            AnalyzeData ad = new AnalyzeData(data, dataToAnalyze, (Integer) stalaUczenia.getValue());
+
+            pc = new Perceptron(Double.parseDouble(stalaUczenia.getText().replace(",", ".")), data);
+            pc.teach();
+
+            AnalyzeData ad = new AnalyzeData(dataToAnalyze, pc);
             try {
                 String result = ad.analyze();
 
@@ -216,7 +222,7 @@ class MyFrame
         }
         else if(e.getSource() == zbiorTestowy) {
             try {
-                int kValue = (int) stalaUczenia.getValue();
+                String kValue = stalaUczenia.getText();
                 ReadData rd = new ReadData("test-set.txt");
                 testData = rd.readData();
                 accurateTest = 0;
@@ -232,7 +238,7 @@ class MyFrame
                                 Thread.sleep(100);
                             }
                             wypisywacDokladnosc = true;
-                            stalaUczenia.setText("" + kValue);
+                            stalaUczenia.setText(kValue);
                             sub.doClick();
                             testIndex++;
                             possibleTest++;

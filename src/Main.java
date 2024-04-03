@@ -5,12 +5,11 @@ class Main {
 
     public static void main(String[] args)
     {
-        ReadData rd = new ReadData("train-set.txt");
-        List<String[]> data = rd.readData();
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MyFrame(data);
+                new MyFrame();
             }
         });
     }
