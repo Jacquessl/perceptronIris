@@ -190,12 +190,17 @@ class MyFrame
                 dataToPrint += result + "<br>";
                 tout.setContentType("text/html");
                 if (wypisywacDokladnosc) {
-                    if (result.trim().equals(testData.get(testIndex)[4].trim())) {
-                        accurateTest++;
+                    try {
+                        if (result.trim().equals(testData.get(testIndex)[4].trim())) {
+                            accurateTest++;
+                        }
+                        int dokladnoscDoWypisania = (accurateTest * 100) / possibleTest;
+                        tout.setText("<html><body><div style='font-family: Arial, Helvetica, sans-serif; font-size: 15pt; text-align: center;'>" + dataToPrint +
+                                "<img src=\'file:img/" + result.toLowerCase().trim() + ".jpg\'/><br>Dokladność: " + dokladnoscDoWypisania + "%</div></body></html>");
+                    }catch (IndexOutOfBoundsException ex){
+                        tout.setText("<html><body><div style='font-family: Arial, Helvetica, sans-serif; font-size: 15pt; text-align: center;'>" + dataToPrint +
+                                "<img src=\'file:img\\" + result.toLowerCase().trim() + ".jpg\'/></div></body></html>");
                     }
-                    int dokladnoscDoWypisania = (accurateTest*100)/possibleTest;
-                    tout.setText("<html><body><div style='font-family: Arial, Helvetica, sans-serif; font-size: 15pt; text-align: center;'>" + dataToPrint +
-                            "<img src=\'file:img/" + result.toLowerCase().trim() + ".jpg\'/><br>Dokladność: " + dokladnoscDoWypisania + "%</div></body></html>");
                 } else {
                     tout.setText("<html><body><div style='font-family: Arial, Helvetica, sans-serif; font-size: 15pt; text-align: center;'>" + dataToPrint +
                             "<img src=\'file:img\\" + result.toLowerCase().trim() + ".jpg\'/></div></body></html>");
